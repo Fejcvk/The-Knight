@@ -1,0 +1,9 @@
+/Users/Tomasz/Desktop/The_Knight - Copy/The_Knight/bin/Debug/The_Knight.exe.config
+/Users/Tomasz/Desktop/The_Knight - Copy/The_Knight/bin/Debug/The_Knight.exe
+/Users/Tomasz/Desktop/The_Knight - Copy/The_Knight/bin/Debug/The_Knight.exe.mdb
+/Users/Tomasz/Desktop/The_Knight - Copy/The_Knight/obj/Debug/The_Knight.Form1.resources
+/Users/Tomasz/Desktop/The_Knight - Copy/The_Knight/obj/Debug/The_Knight.Form2.resources
+/Users/Tomasz/Desktop/The_Knight - Copy/The_Knight/obj/Debug/The_Knight.Properties.Resources.resources
+/Users/Tomasz/Desktop/The_Knight - Copy/The_Knight/obj/Debug/The_Knight.csproj.GenerateResource.Cache
+/Users/Tomasz/Desktop/The_Knight - Copy/The_Knight/obj/Debug/The_Knight.exe
+/Users/Tomasz/Desktop/The_Knight - Copy/The_Knight/obj/Debug/The_Knight.exe.mdb

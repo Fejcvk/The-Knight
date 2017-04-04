@@ -1,0 +1,15 @@
+﻿<Properties StartupConfiguration="{A5186021-176C-4883-AA9D-5D9319E2D9F9}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="The_Knight - Copy Status">
+    <Files>
+      <File FileName="The_Knight/Form1.cs" Line="115" Column="40" />
+      <File FileName="The_Knight - Copy Status" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.The__Knight PreferredExecutionTarget="MonoDevelop.Default" />
+  <MultiItemStartupConfigurations />
+</Properties>
