@@ -21,7 +21,9 @@ namespace The_Knight
         {
             InitializeComponent();
             StartNewGame(8);
+            KeyDown += Form1_KeyDown;
         }
+
 
         //start new game
         private void StartNewGame(int boardSize)
@@ -77,13 +79,12 @@ namespace The_Knight
                     LoadKnight(PictureBoxes.ElementAt(pos));
                     KnightPos = (Point)PictureBoxes.ElementAt(pos).Tag;
                     knightPlaced = true;
+                    Console.WriteLine("Knight placed at" + KnightPos);
                 }
                 else
                     pos += 1;
             }
         }
-        
-
         
         //for shortcut ctrl+n to avoid clearing whole form
         private void RecolorBoard()
@@ -98,7 +99,6 @@ namespace The_Knight
             PlaceKnight();
         }
         
-        
         //for setup marigin to avoid ugly padding
         private static void SetMargin(Control myControl)
         {
@@ -109,8 +109,37 @@ namespace The_Knight
             Margin.Right = 0;
             myControl.Margin = Margin;
         }
-        
-        
+
+        private void MoveKnight(int newcolumnpos, int newrowpos)
+        {
+            PictureBox knightbox = (PictureBox) _pnlBoard.GetControlFromPosition(KnightPos.Y, KnightPos.X);
+            knightbox.Image = null;
+            PictureBox newknightbox = (PictureBox)_pnlBoard.GetControlFromPosition(newcolumnpos, newrowpos);
+            LoadKnight(newknightbox);
+            KnightPos.Y = newcolumnpos;
+            KnightPos.X = newrowpos;
+        }
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Down)
+            {
+                Console.WriteLine("w dol");
+                Console.WriteLine(KnightPos);
+                MoveKnight(KnightPos.Y,KnightPos.X + 1);
+
+            }
+            if (e.KeyCode == Keys.Up)
+            {
+                Console.WriteLine("w góre");
+                Console.WriteLine(KnightPos);
+            }
+            if (e.KeyCode == Keys.Left)
+                Console.WriteLine("w lewo");
+            if (e.KeyCode == Keys.Right)
+                Console.WriteLine("w prawo");
+        }
+
         //load knight image and make it transparent
         public void LoadKnight(PictureBox picturebox)
         {
@@ -196,9 +225,6 @@ namespace The_Knight
                 case (Keys.Control | Keys.M):
                     Settings();
                     return true;
-                case (Keys.Left):
-
-
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
