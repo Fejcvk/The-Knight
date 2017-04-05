@@ -36,7 +36,7 @@
             // 
             // comboBox1
             // 
-            this.comboBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.comboBox1.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
             "8 x 8",
@@ -90,6 +90,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.comboBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "Form2";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
