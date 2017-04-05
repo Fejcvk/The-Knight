@@ -16,3 +16,4 @@ C:\Users\Tomasz\Desktop\PGE\The Knight\The_Knight\obj\Debug\The_Knight.Propertie
 C:\Users\Tomasz\Desktop\PGE\The Knight\The_Knight\obj\Debug\The_Knight.csproj.GenerateResource.Cache
 C:\Users\Tomasz\Desktop\PGE\The Knight\The_Knight\obj\Debug\The_Knight.exe
 C:\Users\Tomasz\Desktop\PGE\The Knight\The_Knight\obj\Debug\The_Knight.pdb
+C:\Users\Tomasz\Desktop\PGE\The Knight\The_Knight\obj\Debug\The_Knight.csprojResolveAssemblyReference.cache

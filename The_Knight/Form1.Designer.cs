@@ -35,10 +35,7 @@
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._pnlBoard = new System.Windows.Forms.TableLayoutPanel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.toolStrip1.SuspendLayout();
-            this._pnlBoard.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -97,7 +94,6 @@
             this._pnlBoard.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
             this._pnlBoard.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
             this._pnlBoard.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
-            this._pnlBoard.Controls.Add(this.pictureBox1, 0, 0);
             this._pnlBoard.Dock = System.Windows.Forms.DockStyle.Fill;
             this._pnlBoard.Location = new System.Drawing.Point(0, 32);
             this._pnlBoard.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -112,15 +108,7 @@
             this._pnlBoard.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
             this._pnlBoard.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
             this._pnlBoard.Size = new System.Drawing.Size(1227, 908);
-            this._pnlBoard.TabIndex = 1;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Location = new System.Drawing.Point(3, 3);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(100, 50);
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
+            this._pnlBoard.TabIndex = 0;
             // 
             // Form1
             // 
@@ -136,8 +124,6 @@
             this.Text = "The Knight";
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            this._pnlBoard.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -148,10 +134,9 @@
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
-        private System.Windows.Forms.TableLayoutPanel _pnlBoard;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        public System.Windows.Forms.TableLayoutPanel _pnlBoard;
     }
 }
 

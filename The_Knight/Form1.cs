@@ -13,7 +13,9 @@ namespace The_Knight
     public partial class Form1 : Form
     {
         private int[,] _board;
+        private Point KnightPos;
         private Random _random = new Random();
+        private List<PictureBox> PictureBoxes;
 
         public Form1()
         {
@@ -21,6 +23,7 @@ namespace The_Knight
             StartNewGame(8);
         }
 
+        //start new game
         private void StartNewGame(int boardSize)
         {
             _board = new int[boardSize, boardSize];
@@ -28,9 +31,10 @@ namespace The_Knight
             _pnlBoard.Enabled = true;
         }
 
-
+        //generate game board with dynamically added pictureboxes
         private void GenerateBoardView()
         {
+            PictureBoxes = new List<PictureBox>();
             _pnlBoard.Controls.Clear();
             _pnlBoard.ColumnStyles.Clear();
             _pnlBoard.RowStyles.Clear();
@@ -44,21 +48,59 @@ namespace The_Knight
                 _pnlBoard.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, (float) 100.0 / _board.GetLength(1)));
                 for (var j = 0; j < _pnlBoard.RowCount; ++j)
                 {
-                    var _pictureBox = new PictureBox
+                    var pictureBox = new PictureBox
                     {
                         Dock = DockStyle.Fill,
-                        Tag = new Point(i, j),
+                        Tag = new Point (i,j),
                         BorderStyle = BorderStyle.None,
                     };
-                    setMargin(_pictureBox);
-                    var _colorVal = setRandom();
-                    _pictureBox.BackColor = (_colorVal == 0 ? Color.Maroon : Color.ForestGreen);
-                    _pnlBoard.Controls.Add(_pictureBox);
+                    SetMargin(pictureBox);
+                    var colorVal = _random.Next(0, 2);
+                    PictureBoxes.Add(pictureBox);
+                    pictureBox.BackColor = (colorVal == 0 ? Color.Maroon : Color.ForestGreen);
+                    _pnlBoard.Controls.Add(pictureBox);
                 }
             }
+            PlaceKnight();
         }
+        
+        
+        //look for non maroon cell and place the knight, also grab the position 
+        private void PlaceKnight()
+        {
+            var pos = 0;
+            var knightPlaced = false;
+            while (knightPlaced == false)
+            {
+                if (PictureBoxes.ElementAt(pos).BackColor == Color.ForestGreen)
+                {
+                    LoadKnight(PictureBoxes.ElementAt(pos));
+                    KnightPos = (Point)PictureBoxes.ElementAt(pos).Tag;
+                    knightPlaced = true;
+                }
+                else
+                    pos += 1;
+            }
+        }
+        
 
-        private void setMargin(Control myControl)
+        
+        //for shortcut ctrl+n to avoid clearing whole form
+        private void RecolorBoard()
+        {
+            for (var i = 0; i < PictureBoxes.Count; ++i)
+            {
+                var colorVal = _random.Next(0, 2);
+                if ((Point)PictureBoxes.ElementAt(i).Tag == KnightPos)
+                    PictureBoxes.ElementAt(i).Image = null;
+                PictureBoxes.ElementAt(i).BackColor = (colorVal == 0 ? Color.Maroon : Color.ForestGreen);
+            }
+            PlaceKnight();
+        }
+        
+        
+        //for setup marigin to avoid ugly padding
+        private static void SetMargin(Control myControl)
         {
             var Margin = myControl.Margin;
             Margin.Top = 0;
@@ -67,12 +109,17 @@ namespace The_Knight
             Margin.Right = 0;
             myControl.Margin = Margin;
         }
-
-        private int setRandom()
+        
+        
+        //load knight image and make it transparent
+        public void LoadKnight(PictureBox picturebox)
         {
-            int random = _random.Next(0, 2);
-            return random;
+            Bitmap src = Properties.Resources.knight;
+            src.MakeTransparent();
+            picturebox.Image = src;
+            picturebox.SizeMode = PictureBoxSizeMode.StretchImage;
         }
+
 
         protected Boolean CanClose(Boolean CanIt)
         {
@@ -103,12 +150,14 @@ namespace The_Knight
             }
         }
 
+
+        //calling setting combobox
         public void Settings()
         {
             var setupBox = new Form2();
             DialogResult result = setupBox.ShowDialog(this);
             if (result == DialogResult.Abort)
-                setupBox.Dispose();
+                setupBox.Close();
             else
             {
                 if (setupBox.comboBox1.SelectedIndex == 0)
@@ -142,11 +191,14 @@ namespace The_Knight
             switch (keyData)
             {
                 case (Keys.Control | Keys.N):
-                    StartNewGame(8);
+                    RecolorBoard();
                     return true;
                 case (Keys.Control | Keys.M):
                     Settings();
                     return true;
+                case (Keys.Left):
+
+
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
