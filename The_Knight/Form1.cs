@@ -120,10 +120,7 @@ namespace The_Knight
             if (newknightbox.BackColor == Color.ForestGreen)
             {
                 knightbox.Image = null;
-                if (isReversed)
-                    LoadKnightL(newknightbox);
-                else
-                    LoadKnight(newknightbox);
+                LoadKnight(newknightbox);
                 KnightPos.Y = newcolumnpos;
                 KnightPos.X = newrowpos;
             }
@@ -172,22 +169,15 @@ namespace The_Knight
         //load knight image and make it transparent
         public void LoadKnight(PictureBox picturebox)
         {
-            Bitmap src = Properties.Resources.knight;
+            Bitmap src;
+            if (isReversed)
+                src = Properties.Resources.knight2;
+            else
+                src = Properties.Resources.knight;
             src.MakeTransparent();
             picturebox.Image = src;
             picturebox.SizeMode = PictureBoxSizeMode.StretchImage;
         }
-
-        //loard knight left imake and make it transparent
-        public void LoadKnightL(PictureBox picturebox)
-        {
-            Bitmap src = Properties.Resources.knight2;
-            src.MakeTransparent();
-            picturebox.Image = src;
-            picturebox.SizeMode = PictureBoxSizeMode.StretchImage;
-        }
-
-
         protected Boolean CanClose(Boolean CanIt)
         {
             if (MessageBox.Show("Wanna close?", "Cancel game", MessageBoxButtons.YesNo, MessageBoxIcon.Question) ==
