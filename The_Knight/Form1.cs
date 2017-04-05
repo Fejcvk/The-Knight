@@ -14,6 +14,7 @@ namespace The_Knight
     {
         private int[,] _board;
         private Point KnightPos;
+        private Point Keypos;
         private bool isReversed = false;
         private Random _random = new Random();
         private List<PictureBox> PictureBoxes;
@@ -65,6 +66,7 @@ namespace The_Knight
                 }
             }
             PlaceKnight();
+            PlaceKey();
         }
         
         
@@ -95,9 +97,12 @@ namespace The_Knight
                 var colorVal = _random.Next(0, 2);
                 if ((Point)PictureBoxes.ElementAt(i).Tag == KnightPos)
                     PictureBoxes.ElementAt(i).Image = null;
+                else if ((Point)PictureBoxes.ElementAt(i).Tag == Keypos)
+                    PictureBoxes.ElementAt(i).Image = null;
                 PictureBoxes.ElementAt(i).BackColor = (colorVal == 0 ? Color.Maroon : Color.ForestGreen);
             }
             PlaceKnight();
+            PlaceKey();
         }
         
         //for setup marigin to avoid ugly padding
@@ -111,7 +116,39 @@ namespace The_Knight
             myControl.Margin = Margin;
         }
         
-        
+        //place key random on board
+        private void PlaceKey()
+        {
+            var pos = _random.Next(0,PictureBoxes.Count);
+            var keyplaced = false;
+            Keypos = (Point)PictureBoxes.ElementAt(pos).Tag;
+            while (keyplaced == false)
+            {
+                if (PictureBoxes.ElementAt(pos).BackColor == Color.ForestGreen && Keypos != KnightPos)
+                {
+                    LoadKey(PictureBoxes.ElementAt(pos));
+                    Keypos = (Point) PictureBoxes.ElementAt(pos).Tag;
+                    keyplaced = true;
+                    Console.WriteLine("Key placed at" + Keypos);
+                }
+                else
+                {
+                    pos = _random.Next(0, PictureBoxes.Count);
+                    Keypos = (Point)PictureBoxes.ElementAt(pos).Tag;
+                }
+            }
+        }
+
+        private void LoadKey(PictureBox picturebox)
+        {
+            Bitmap src;
+            src = Properties.Resources.key2;
+            src.MakeTransparent();
+            picturebox.Image = src;
+            picturebox.SizeMode = PictureBoxSizeMode.StretchImage;
+        }
+
+
         //move knight
         private void MoveKnight(int newcolumnpos, int newrowpos)
         {
@@ -178,6 +215,7 @@ namespace The_Knight
             picturebox.Image = src;
             picturebox.SizeMode = PictureBoxSizeMode.StretchImage;
         }
+
         protected Boolean CanClose(Boolean CanIt)
         {
             if (MessageBox.Show("Wanna close?", "Cancel game", MessageBoxButtons.YesNo, MessageBoxIcon.Question) ==
@@ -206,7 +244,6 @@ namespace The_Knight
                 e.Cancel = true;
             }
         }
-
 
         //calling setting combobox
         public void Settings()
