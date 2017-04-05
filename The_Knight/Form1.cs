@@ -15,7 +15,10 @@ namespace The_Knight
         private int[,] _board;
         private Point KnightPos;
         private Point Keypos;
+        private Point Doorpos;
         private bool isReversed = false;
+        private bool isOpen = false;
+        private bool isCollected = false;
         private Random _random = new Random();
         private List<PictureBox> PictureBoxes;
 
@@ -67,6 +70,7 @@ namespace The_Knight
             }
             PlaceKnight();
             PlaceKey();
+            PlaceDoor();
         }
         
         
@@ -99,12 +103,17 @@ namespace The_Knight
                     PictureBoxes.ElementAt(i).Image = null;
                 else if ((Point)PictureBoxes.ElementAt(i).Tag == Keypos)
                     PictureBoxes.ElementAt(i).Image = null;
+                else if ((Point)PictureBoxes.ElementAt(i).Tag == Doorpos)
+                    PictureBoxes.ElementAt(i).Image = null;
+
                 PictureBoxes.ElementAt(i).BackColor = (colorVal == 0 ? Color.Maroon : Color.ForestGreen);
             }
             PlaceKnight();
             PlaceKey();
+            PlaceDoor();
         }
         
+
         //for setup marigin to avoid ugly padding
         private static void SetMargin(Control myControl)
         {
@@ -139,6 +148,7 @@ namespace The_Knight
             }
         }
 
+        //load key from resources
         private void LoadKey(PictureBox picturebox)
         {
             Bitmap src;
@@ -148,25 +158,101 @@ namespace The_Knight
             picturebox.SizeMode = PictureBoxSizeMode.StretchImage;
         }
 
+        //load closed gate from resources
+        private void LoadDoor(PictureBox picturebox)
+        {
+            Bitmap src;
+            if (!isOpen)
+                src = Properties.Resources.closed_door;
+            else
+                src = Properties.Resources.opened_door;
+            src.MakeTransparent();
+            picturebox.Image = src;
+            picturebox.SizeMode = PictureBoxSizeMode.StretchImage;
+        }
 
+        //place key random on board
+        private void PlaceDoor()
+        {
+            var pos = _random.Next(0, PictureBoxes.Count);
+            var doorplaced = false;
+            Doorpos = (Point)PictureBoxes.ElementAt(pos).Tag;
+            while (doorplaced == false)
+            {
+                if (PictureBoxes.ElementAt(pos).BackColor == Color.ForestGreen && Doorpos != KnightPos && Doorpos != Keypos)
+                {
+                    LoadDoor(PictureBoxes.ElementAt(pos));
+                    Doorpos = (Point)PictureBoxes.ElementAt(pos).Tag;
+                    doorplaced = true;
+                    Console.WriteLine("Door placed at" + Keypos);
+                }
+                else
+                {
+                    pos = _random.Next(0, PictureBoxes.Count);
+                    Doorpos = (Point)PictureBoxes.ElementAt(pos).Tag;
+                }
+            }
+        }
         //move knight
         private void MoveKnight(int newcolumnpos, int newrowpos)
         {
             PictureBox knightbox = (PictureBox) _pnlBoard.GetControlFromPosition(KnightPos.Y, KnightPos.X);
             PictureBox newknightbox = (PictureBox)_pnlBoard.GetControlFromPosition(newcolumnpos, newrowpos);
-            if (newknightbox.BackColor == Color.ForestGreen)
+            if (newknightbox.BackColor == Color.ForestGreen && (Point)newknightbox.Tag != Doorpos)
             {
                 knightbox.Image = null;
                 LoadKnight(newknightbox);
                 KnightPos.Y = newcolumnpos;
                 KnightPos.X = newrowpos;
             }
+            else if ((Point) newknightbox.Tag == Doorpos && isOpen)
+            {
+                isOpen = false;
+                RecolorBoard();
+                Console.WriteLine("New level generated");
+            }
             else
             {
                 Console.WriteLine("There is a wall");
             }
+            if ((Point) newknightbox.Tag == Keypos)
+            {
+                isCollected = true;
+                isOpen = true;
+                PictureBox doorbox = (PictureBox) _pnlBoard.GetControlFromPosition(Doorpos.Y, Doorpos.X);
+                LoadDoor(doorbox);
+                Console.WriteLine("Key has been collected and doors are open");
+            }
         }
 
+        //destroying a wall while press spacebar
+        private void Destroy()
+        {
+            PictureBox aboveknight;
+            if (KnightPos.X - 1 >= 0)
+            {
+                aboveknight = (PictureBox) _pnlBoard.GetControlFromPosition(KnightPos.Y, KnightPos.X - 1);
+                aboveknight.BackColor = Color.ForestGreen;
+            }
+            PictureBox underknight;
+            if (KnightPos.X + 1 < 8)
+            {
+                underknight = (PictureBox) _pnlBoard.GetControlFromPosition(KnightPos.Y, KnightPos.X + 1);
+                underknight.BackColor = Color.ForestGreen;
+            }
+            PictureBox lefttoknight;
+            if (KnightPos.Y - 1 >= 0)
+            {
+                lefttoknight = (PictureBox) _pnlBoard.GetControlFromPosition(KnightPos.Y - 1, KnightPos.X);
+                lefttoknight.BackColor = Color.ForestGreen;
+            }
+            PictureBox righttoknight;
+            if (KnightPos.Y + 1 < 8)
+            {
+                righttoknight = (PictureBox) _pnlBoard.GetControlFromPosition(KnightPos.Y + 1, KnightPos.X);
+                righttoknight.BackColor = Color.ForestGreen;
+            }
+        }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
@@ -200,6 +286,11 @@ namespace The_Knight
                 if (KnightPos.Y + 1 < 8)
                     MoveKnight(KnightPos.Y + 1, KnightPos.X);
                 Console.WriteLine(KnightPos);
+            }
+            if (e.KeyCode == Keys.Space)
+            {
+                Console.WriteLine("DEEEESTROOOY");
+                Destroy();
             }
         }
 
