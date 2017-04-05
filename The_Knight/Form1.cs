@@ -14,6 +14,7 @@ namespace The_Knight
     {
         private int[,] _board;
         private Point KnightPos;
+        private bool isReversed = false;
         private Random _random = new Random();
         private List<PictureBox> PictureBoxes;
 
@@ -109,7 +110,9 @@ namespace The_Knight
             Margin.Right = 0;
             myControl.Margin = Margin;
         }
-
+        
+        
+        //move knight
         private void MoveKnight(int newcolumnpos, int newrowpos)
         {
             PictureBox knightbox = (PictureBox) _pnlBoard.GetControlFromPosition(KnightPos.Y, KnightPos.X);
@@ -117,7 +120,10 @@ namespace The_Knight
             if (newknightbox.BackColor == Color.ForestGreen)
             {
                 knightbox.Image = null;
-                LoadKnight(newknightbox);
+                if (isReversed)
+                    LoadKnightL(newknightbox);
+                else
+                    LoadKnight(newknightbox);
                 KnightPos.Y = newcolumnpos;
                 KnightPos.X = newrowpos;
             }
@@ -126,6 +132,7 @@ namespace The_Knight
                 Console.WriteLine("There is a wall");
             }
         }
+
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
@@ -147,6 +154,7 @@ namespace The_Knight
             if (e.KeyCode == Keys.Left)
             {
                 Console.WriteLine("w lewo");
+                isReversed = true;
                 if (KnightPos.Y - 1 >= 0)
                     MoveKnight(KnightPos.Y - 1, KnightPos.X);
                 Console.WriteLine(KnightPos);
@@ -154,9 +162,10 @@ namespace The_Knight
             if (e.KeyCode == Keys.Right)
             {
                 Console.WriteLine("w prawo");
-                Console.WriteLine("w lewo");
+                isReversed = false;
                 if (KnightPos.Y + 1 < 8)
                     MoveKnight(KnightPos.Y + 1, KnightPos.X);
+                Console.WriteLine(KnightPos);
             }
         }
 
@@ -164,6 +173,15 @@ namespace The_Knight
         public void LoadKnight(PictureBox picturebox)
         {
             Bitmap src = Properties.Resources.knight;
+            src.MakeTransparent();
+            picturebox.Image = src;
+            picturebox.SizeMode = PictureBoxSizeMode.StretchImage;
+        }
+
+        //loard knight left imake and make it transparent
+        public void LoadKnightL(PictureBox picturebox)
+        {
+            Bitmap src = Properties.Resources.knight2;
             src.MakeTransparent();
             picturebox.Image = src;
             picturebox.SizeMode = PictureBoxSizeMode.StretchImage;
