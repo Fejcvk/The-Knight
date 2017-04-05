@@ -113,11 +113,18 @@ namespace The_Knight
         private void MoveKnight(int newcolumnpos, int newrowpos)
         {
             PictureBox knightbox = (PictureBox) _pnlBoard.GetControlFromPosition(KnightPos.Y, KnightPos.X);
-            knightbox.Image = null;
             PictureBox newknightbox = (PictureBox)_pnlBoard.GetControlFromPosition(newcolumnpos, newrowpos);
-            LoadKnight(newknightbox);
-            KnightPos.Y = newcolumnpos;
-            KnightPos.X = newrowpos;
+            if (newknightbox.BackColor == Color.ForestGreen)
+            {
+                knightbox.Image = null;
+                LoadKnight(newknightbox);
+                KnightPos.Y = newcolumnpos;
+                KnightPos.X = newrowpos;
+            }
+            else
+            {
+                Console.WriteLine("There is a wall");
+            }
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
@@ -125,19 +132,32 @@ namespace The_Knight
             if (e.KeyCode == Keys.Down)
             {
                 Console.WriteLine("w dol");
+                if(KnightPos.X + 1 < 8)
+                    MoveKnight(KnightPos.Y,KnightPos.X + 1);
                 Console.WriteLine(KnightPos);
-                MoveKnight(KnightPos.Y,KnightPos.X + 1);
 
             }
             if (e.KeyCode == Keys.Up)
             {
                 Console.WriteLine("w góre");
+                if(KnightPos.X - 1 >= 0)
+                    MoveKnight(KnightPos.Y, (KnightPos.X - 1));
                 Console.WriteLine(KnightPos);
             }
             if (e.KeyCode == Keys.Left)
+            {
                 Console.WriteLine("w lewo");
+                if (KnightPos.Y - 1 >= 0)
+                    MoveKnight(KnightPos.Y - 1, KnightPos.X);
+                Console.WriteLine(KnightPos);
+            }
             if (e.KeyCode == Keys.Right)
+            {
                 Console.WriteLine("w prawo");
+                Console.WriteLine("w lewo");
+                if (KnightPos.Y + 1 < 8)
+                    MoveKnight(KnightPos.Y + 1, KnightPos.X);
+            }
         }
 
         //load knight image and make it transparent
