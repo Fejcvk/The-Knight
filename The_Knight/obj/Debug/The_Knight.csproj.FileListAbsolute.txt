@@ -7,3 +7,13 @@
 /Users/Tomasz/Desktop/The_Knight - Copy/The_Knight/obj/Debug/The_Knight.csproj.GenerateResource.Cache
 /Users/Tomasz/Desktop/The_Knight - Copy/The_Knight/obj/Debug/The_Knight.exe
 /Users/Tomasz/Desktop/The_Knight - Copy/The_Knight/obj/Debug/The_Knight.exe.mdb
+C:\Users\Tomasz\Desktop\PGE\The Knight\The_Knight\bin\Debug\The_Knight.exe.config
+C:\Users\Tomasz\Desktop\PGE\The Knight\The_Knight\bin\Debug\The_Knight.exe
+C:\Users\Tomasz\Desktop\PGE\The Knight\The_Knight\bin\Debug\The_Knight.pdb
+C:\Users\Tomasz\Desktop\PGE\The Knight\The_Knight\obj\Debug\The_Knight.Form1.resources
+C:\Users\Tomasz\Desktop\PGE\The Knight\The_Knight\obj\Debug\The_Knight.Form2.resources
+C:\Users\Tomasz\Desktop\PGE\The Knight\The_Knight\obj\Debug\The_Knight.Properties.Resources.resources
+C:\Users\Tomasz\Desktop\PGE\The Knight\The_Knight\obj\Debug\The_Knight.csproj.GenerateResource.Cache
+C:\Users\Tomasz\Desktop\PGE\The Knight\The_Knight\obj\Debug\The_Knight.exe
+C:\Users\Tomasz\Desktop\PGE\The Knight\The_Knight\obj\Debug\The_Knight.pdb
+C:\Users\Tomasz\Desktop\PGE\The Knight\The_Knight\obj\Debug\The_Knight.csprojResolveAssemblyReference.cache
