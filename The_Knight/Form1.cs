@@ -16,9 +16,9 @@ namespace The_Knight
         private Point KnightPos;
         private Point Keypos;
         private Point Doorpos;
+        public bool keyPressed = false;
         private bool isReversed = false;
         private bool isOpen = false;
-        private bool isCollected = false;
         private Random _random = new Random();
         private List<PictureBox> PictureBoxes;
 
@@ -162,7 +162,7 @@ namespace The_Knight
         private void LoadDoor(PictureBox picturebox)
         {
             Bitmap src;
-            if (!isOpen)
+            if(!isOpen)
                 src = Properties.Resources.closed_door;
             else
                 src = Properties.Resources.opened_door;
@@ -217,7 +217,6 @@ namespace The_Knight
             }
             if ((Point) newknightbox.Tag == Keypos)
             {
-                isCollected = true;
                 isOpen = true;
                 PictureBox doorbox = (PictureBox) _pnlBoard.GetControlFromPosition(Doorpos.Y, Doorpos.X);
                 LoadDoor(doorbox);
@@ -235,7 +234,7 @@ namespace The_Knight
                 aboveknight.BackColor = Color.ForestGreen;
             }
             PictureBox underknight;
-            if (KnightPos.X + 1 < 8)
+            if (KnightPos.X + 1 < _board.GetLength(0))
             {
                 underknight = (PictureBox) _pnlBoard.GetControlFromPosition(KnightPos.Y, KnightPos.X + 1);
                 underknight.BackColor = Color.ForestGreen;
@@ -247,7 +246,7 @@ namespace The_Knight
                 lefttoknight.BackColor = Color.ForestGreen;
             }
             PictureBox righttoknight;
-            if (KnightPos.Y + 1 < 8)
+            if (KnightPos.Y + 1 < _board.GetLength(0))
             {
                 righttoknight = (PictureBox) _pnlBoard.GetControlFromPosition(KnightPos.Y + 1, KnightPos.X);
                 righttoknight.BackColor = Color.ForestGreen;
@@ -259,10 +258,9 @@ namespace The_Knight
             if (e.KeyCode == Keys.Down)
             {
                 Console.WriteLine("w dol");
-                if(KnightPos.X + 1 < 8)
+                if(KnightPos.X + 1 < _board.GetLength(0))
                     MoveKnight(KnightPos.Y,KnightPos.X + 1);
                 Console.WriteLine(KnightPos);
-
             }
             if (e.KeyCode == Keys.Up)
             {
@@ -283,7 +281,7 @@ namespace The_Knight
             {
                 Console.WriteLine("w prawo");
                 isReversed = false;
-                if (KnightPos.Y + 1 < 8)
+                if (KnightPos.Y + 1 < _board.GetLength(0))
                     MoveKnight(KnightPos.Y + 1, KnightPos.X);
                 Console.WriteLine(KnightPos);
             }
