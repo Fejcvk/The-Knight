@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -12,6 +13,7 @@ namespace The_Knight
 {
     public partial class Form1 : Form
     {
+        private spalshscreen splash;
         private int[,] _board;
         private int[,] _colorBoard;
         private Point KnightPos;
@@ -25,7 +27,24 @@ namespace The_Knight
 
         public Form1()
         {
+            bool done = false;
+            ThreadPool.QueueUserWorkItem((x) =>
+            {
+                using (var splashForm = new spalshscreen())
+                {
+                    splashForm.Show();
+                    while (!done)
+                        Application.DoEvents();
+                    splashForm.Close();
+                }
+            });
+            Thread.Sleep(3000);
+            done = true;
+            Show();
             InitializeComponent();
+            Activate();
+            CenterToScreen();
+            TopMost = false;
             StartNewGame(8);
             KeyDown += Form1_KeyDown;
             KeyUp += Form1_KeyUp;
@@ -65,7 +84,7 @@ namespace The_Knight
                     var pictureBox = new PictureBox
                     {
                         Dock = DockStyle.Fill,
-                        Tag = new Point (i,j),
+                        Tag = new Point(i, j),
                         BorderStyle = BorderStyle.None,
                     };
                     SetMargin(pictureBox);
@@ -76,8 +95,8 @@ namespace The_Knight
             }
             RecolorBoard();
         }
-        
-        
+
+
         //look for non maroon cell and place the knight, also grab the position 
         private void PlaceKnight()
         {
@@ -88,7 +107,7 @@ namespace The_Knight
                 if (PictureBoxes.ElementAt(pos).BackColor == Color.ForestGreen)
                 {
                     LoadKnight(PictureBoxes.ElementAt(pos));
-                    KnightPos = (Point)PictureBoxes.ElementAt(pos).Tag;
+                    KnightPos = (Point) PictureBoxes.ElementAt(pos).Tag;
                     knightPlaced = true;
                     Console.WriteLine("Knight placed at" + KnightPos);
                 }
@@ -96,7 +115,7 @@ namespace The_Knight
                     pos += 1;
             }
         }
-        
+
         //for shortcut ctrl+n to avoid clearing whole form
         private void RecolorBoard()
         {
@@ -130,8 +149,8 @@ namespace The_Knight
                     else
                     {
                         var colorValue = _random.Next(0, 4);
-                        PictureBox currentbox = (PictureBox)_pnlBoard.GetControlFromPosition(j, i);
-                        if(colorValue == 0)
+                        PictureBox currentbox = (PictureBox) _pnlBoard.GetControlFromPosition(j, i);
+                        if (colorValue == 0)
                             currentbox.BackColor = Color.Maroon;
                         else
                         {
@@ -145,7 +164,7 @@ namespace The_Knight
             PlaceKey();
             PlaceDoor();
         }
-        
+
 
         //for setup marigin to avoid ugly padding
         private static void SetMargin(Control myControl)
@@ -157,13 +176,13 @@ namespace The_Knight
             Margin.Right = 0;
             myControl.Margin = Margin;
         }
-        
+
         //place key random on board
         private void PlaceKey()
         {
-            var pos = _random.Next(0,PictureBoxes.Count);
+            var pos = _random.Next(0, PictureBoxes.Count);
             var keyplaced = false;
-            Keypos = (Point)PictureBoxes.ElementAt(pos).Tag;
+            Keypos = (Point) PictureBoxes.ElementAt(pos).Tag;
             while (keyplaced == false)
             {
                 if (PictureBoxes.ElementAt(pos).BackColor == Color.ForestGreen && Keypos != KnightPos)
@@ -176,7 +195,7 @@ namespace The_Knight
                 else
                 {
                     pos = _random.Next(0, PictureBoxes.Count);
-                    Keypos = (Point)PictureBoxes.ElementAt(pos).Tag;
+                    Keypos = (Point) PictureBoxes.ElementAt(pos).Tag;
                 }
             }
         }
@@ -195,7 +214,7 @@ namespace The_Knight
         private void LoadDoor(PictureBox picturebox)
         {
             Bitmap src;
-            if(!isOpen)
+            if (!isOpen)
                 src = Properties.Resources.closed_door;
             else
                 src = Properties.Resources.opened_door;
@@ -209,29 +228,31 @@ namespace The_Knight
         {
             var pos = _random.Next(0, PictureBoxes.Count);
             var doorplaced = false;
-            Doorpos = (Point)PictureBoxes.ElementAt(pos).Tag;
+            Doorpos = (Point) PictureBoxes.ElementAt(pos).Tag;
             while (doorplaced == false)
             {
-                if (PictureBoxes.ElementAt(pos).BackColor == Color.ForestGreen && Doorpos != KnightPos && Doorpos != Keypos)
+                if (PictureBoxes.ElementAt(pos).BackColor == Color.ForestGreen && Doorpos != KnightPos &&
+                    Doorpos != Keypos)
                 {
                     LoadDoor(PictureBoxes.ElementAt(pos));
-                    Doorpos = (Point)PictureBoxes.ElementAt(pos).Tag;
+                    Doorpos = (Point) PictureBoxes.ElementAt(pos).Tag;
                     doorplaced = true;
                     Console.WriteLine("Door placed at" + Keypos);
                 }
                 else
                 {
                     pos = _random.Next(0, PictureBoxes.Count);
-                    Doorpos = (Point)PictureBoxes.ElementAt(pos).Tag;
+                    Doorpos = (Point) PictureBoxes.ElementAt(pos).Tag;
                 }
             }
         }
+
         //move knight
         private void MoveKnight(int newcolumnpos, int newrowpos)
         {
             PictureBox knightbox = (PictureBox) _pnlBoard.GetControlFromPosition(KnightPos.Y, KnightPos.X);
-            PictureBox newknightbox = (PictureBox)_pnlBoard.GetControlFromPosition(newcolumnpos, newrowpos);
-            if (newknightbox.BackColor == Color.ForestGreen && (Point)newknightbox.Tag != Doorpos)
+            PictureBox newknightbox = (PictureBox) _pnlBoard.GetControlFromPosition(newcolumnpos, newrowpos);
+            if (newknightbox.BackColor == Color.ForestGreen && (Point) newknightbox.Tag != Doorpos)
             {
                 knightbox.Image = null;
                 LoadKnight(newknightbox);
@@ -291,14 +312,14 @@ namespace The_Knight
             if (e.KeyCode == Keys.Down && !keyPressed)
             {
                 Console.WriteLine("w dol");
-                if(KnightPos.X + 1 < _board.GetLength(0))
-                    MoveKnight(KnightPos.Y,KnightPos.X + 1);
+                if (KnightPos.X + 1 < _board.GetLength(0))
+                    MoveKnight(KnightPos.Y, KnightPos.X + 1);
                 Console.WriteLine(KnightPos);
             }
             if (e.KeyCode == Keys.Up && !keyPressed)
             {
                 Console.WriteLine("w góre");
-                if(KnightPos.X - 1 >= 0)
+                if (KnightPos.X - 1 >= 0)
                     MoveKnight(KnightPos.Y, (KnightPos.X - 1));
                 Console.WriteLine(KnightPos);
             }
@@ -361,6 +382,7 @@ namespace The_Knight
             if (CanClose(false) == true)
             {
                 this.Dispose(true);
+                Console.WriteLine("Zamykam");
             }
             else
             {
