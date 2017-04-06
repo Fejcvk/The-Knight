@@ -17,3 +17,4 @@ C:\Users\Tomasz\Desktop\PGE\The Knight\The_Knight\obj\Debug\The_Knight.csproj.Ge
 C:\Users\Tomasz\Desktop\PGE\The Knight\The_Knight\obj\Debug\The_Knight.exe
 C:\Users\Tomasz\Desktop\PGE\The Knight\The_Knight\obj\Debug\The_Knight.pdb
 C:\Users\Tomasz\Desktop\PGE\The Knight\The_Knight\obj\Debug\The_Knight.csprojResolveAssemblyReference.cache
+C:\Users\Tomasz\Desktop\PGE\The Knight\The_Knight\obj\Debug\The_Knight.spalshscreen.resources
