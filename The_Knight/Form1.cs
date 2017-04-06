@@ -16,9 +16,9 @@ namespace The_Knight
         private Point KnightPos;
         private Point Keypos;
         private Point Doorpos;
-        private bool isReversed = false;
-        private bool isOpen = false;
-        private bool isCollected = false;
+        private bool keyPressed = false;
+        private bool isReversed;
+        private bool isOpen;
         private Random _random = new Random();
         private List<PictureBox> PictureBoxes;
 
@@ -27,8 +27,13 @@ namespace The_Knight
             InitializeComponent();
             StartNewGame(8);
             KeyDown += Form1_KeyDown;
+            KeyUp += Form1_KeyUp;
         }
 
+        private void Form1_KeyUp(object sender, KeyEventArgs e)
+        {
+            keyPressed = false;
+        }
 
         //start new game
         private void StartNewGame(int boardSize)
@@ -62,15 +67,11 @@ namespace The_Knight
                         BorderStyle = BorderStyle.None,
                     };
                     SetMargin(pictureBox);
-                    var colorVal = _random.Next(0, 2);
                     PictureBoxes.Add(pictureBox);
-                    pictureBox.BackColor = (colorVal == 0 ? Color.Maroon : Color.ForestGreen);
                     _pnlBoard.Controls.Add(pictureBox);
                 }
             }
-            PlaceKnight();
-            PlaceKey();
-            PlaceDoor();
+            RecolorBoard();
         }
         
         
@@ -96,17 +97,96 @@ namespace The_Knight
         //for shortcut ctrl+n to avoid clearing whole form
         private void RecolorBoard()
         {
+            //wyczyszczenie tablicy
             for (var i = 0; i < PictureBoxes.Count; ++i)
             {
-                var colorVal = _random.Next(0, 2);
-                if ((Point)PictureBoxes.ElementAt(i).Tag == KnightPos)
+                if ((Point) PictureBoxes.ElementAt(i).Tag == KnightPos)
                     PictureBoxes.ElementAt(i).Image = null;
-                else if ((Point)PictureBoxes.ElementAt(i).Tag == Keypos)
+                else if ((Point) PictureBoxes.ElementAt(i).Tag == Keypos)
                     PictureBoxes.ElementAt(i).Image = null;
-                else if ((Point)PictureBoxes.ElementAt(i).Tag == Doorpos)
+                else if ((Point) PictureBoxes.ElementAt(i).Tag == Doorpos)
                     PictureBoxes.ElementAt(i).Image = null;
+            }
+            //odpowiednie kolorowanie tablicy
+            for (var i = 0; i < _pnlBoard.ColumnCount; ++i)
+            {
+                for (var j = 0; j < _pnlBoard.ColumnCount; ++j)
+                {
+                    PictureBox current = (PictureBox) _pnlBoard.GetControlFromPosition(j, i);
+                    PictureBox neighborL;
+                    PictureBox neighborR;
+                    PictureBox neighborU;
+                    PictureBox neighborD;
+                    if (j - 1 >= 0)
+                    {
+                        neighborL = (PictureBox) _pnlBoard.GetControlFromPosition(j - 1, i);
+                        current = (PictureBox) _pnlBoard.GetControlFromPosition(j, i);
+                        //if adjacent wall i a wall we have 50% chance to our cell be a wall
+                        if (neighborL.BackColor == Color.Maroon)
+                        {
+                            var colorVal = _random.Next(0, 2);
+                            current.BackColor = colorVal == 0 ? Color.Maroon : Color.ForestGreen;
+                        }
+                        //esle we have 20% for our cell to be a wall
+                        else
+                        {
+                            var colorVal = _random.Next(0, 4);
+                            current.BackColor = colorVal == 0 ? Color.Maroon : Color.ForestGreen;
+                        }
+                    }
+                    if (j + 1 < _board.GetLength(0))
+                    {
+                        neighborR = (PictureBox) _pnlBoard.GetControlFromPosition(j + 1, i);
+                        current = (PictureBox) _pnlBoard.GetControlFromPosition(j, i);
+                        //if adjacent wall i a wall we have 50% chance to our cell be a wall
+                        if (neighborR.BackColor == Color.Maroon)
+                        {
+                            var colorVal = _random.Next(0, 2);
+                            current.BackColor = colorVal == 0 ? Color.Maroon : Color.ForestGreen;
+                        }
+                        //esle we have 20% for our cell to be a wall
+                        else
+                        {
+                            var colorVal = _random.Next(0, 4);
+                            current.BackColor = colorVal == 0 ? Color.Maroon : Color.ForestGreen;
+                        }
+                    }
 
-                PictureBoxes.ElementAt(i).BackColor = (colorVal == 0 ? Color.Maroon : Color.ForestGreen);
+                    if (i - 1 >= 0)
+                    {
+                        neighborU = (PictureBox) _pnlBoard.GetControlFromPosition(j, i - 1);
+                        current = (PictureBox) _pnlBoard.GetControlFromPosition(j, i);
+                        //if adjacent wall i a wall we have 50% chance to our cell be a wall
+                        if (neighborU.BackColor == Color.Maroon)
+                        {
+                            var colorVal = _random.Next(0, 2);
+                            current.BackColor = colorVal == 0 ? Color.Maroon : Color.ForestGreen;
+                        }
+                        //esle we have 20% for our cell to be a wall
+                        else
+                        {
+                            var colorVal = _random.Next(0, 4);
+                            current.BackColor = colorVal == 0 ? Color.Maroon : Color.ForestGreen;
+                        }
+                    }
+                    if (i + 1 < _board.GetLength(0))
+                    {
+                        neighborD = (PictureBox) _pnlBoard.GetControlFromPosition(j, i + 1);
+                        current = (PictureBox) _pnlBoard.GetControlFromPosition(j, i);
+                        //if adjacent wall i a wall we have 50% chance to our cell be a wall
+                        if (neighborD.BackColor == Color.Maroon)
+                        {
+                            var colorVal = _random.Next(0, 2);
+                            current.BackColor = colorVal == 0 ? Color.Maroon : Color.ForestGreen;
+                        }
+                        //esle we have 20% for our cell to be a wall
+                        else
+                        {
+                            var colorVal = _random.Next(0, 4);
+                            current.BackColor = colorVal == 0 ? Color.Maroon : Color.ForestGreen;
+                        }
+                    }
+                }
             }
             PlaceKnight();
             PlaceKey();
@@ -162,7 +242,7 @@ namespace The_Knight
         private void LoadDoor(PictureBox picturebox)
         {
             Bitmap src;
-            if (!isOpen)
+            if(!isOpen)
                 src = Properties.Resources.closed_door;
             else
                 src = Properties.Resources.opened_door;
@@ -217,7 +297,6 @@ namespace The_Knight
             }
             if ((Point) newknightbox.Tag == Keypos)
             {
-                isCollected = true;
                 isOpen = true;
                 PictureBox doorbox = (PictureBox) _pnlBoard.GetControlFromPosition(Doorpos.Y, Doorpos.X);
                 LoadDoor(doorbox);
@@ -235,7 +314,7 @@ namespace The_Knight
                 aboveknight.BackColor = Color.ForestGreen;
             }
             PictureBox underknight;
-            if (KnightPos.X + 1 < 8)
+            if (KnightPos.X + 1 < _board.GetLength(0))
             {
                 underknight = (PictureBox) _pnlBoard.GetControlFromPosition(KnightPos.Y, KnightPos.X + 1);
                 underknight.BackColor = Color.ForestGreen;
@@ -247,7 +326,7 @@ namespace The_Knight
                 lefttoknight.BackColor = Color.ForestGreen;
             }
             PictureBox righttoknight;
-            if (KnightPos.Y + 1 < 8)
+            if (KnightPos.Y + 1 < _board.GetLength(0))
             {
                 righttoknight = (PictureBox) _pnlBoard.GetControlFromPosition(KnightPos.Y + 1, KnightPos.X);
                 righttoknight.BackColor = Color.ForestGreen;
@@ -256,22 +335,21 @@ namespace The_Knight
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Down)
+            if (e.KeyCode == Keys.Down && !keyPressed)
             {
                 Console.WriteLine("w dol");
-                if(KnightPos.X + 1 < 8)
+                if(KnightPos.X + 1 < _board.GetLength(0))
                     MoveKnight(KnightPos.Y,KnightPos.X + 1);
                 Console.WriteLine(KnightPos);
-
             }
-            if (e.KeyCode == Keys.Up)
+            if (e.KeyCode == Keys.Up && !keyPressed)
             {
                 Console.WriteLine("w góre");
                 if(KnightPos.X - 1 >= 0)
                     MoveKnight(KnightPos.Y, (KnightPos.X - 1));
                 Console.WriteLine(KnightPos);
             }
-            if (e.KeyCode == Keys.Left)
+            if (e.KeyCode == Keys.Left && !keyPressed)
             {
                 Console.WriteLine("w lewo");
                 isReversed = true;
@@ -279,11 +357,11 @@ namespace The_Knight
                     MoveKnight(KnightPos.Y - 1, KnightPos.X);
                 Console.WriteLine(KnightPos);
             }
-            if (e.KeyCode == Keys.Right)
+            if (e.KeyCode == Keys.Right && !keyPressed)
             {
                 Console.WriteLine("w prawo");
                 isReversed = false;
-                if (KnightPos.Y + 1 < 8)
+                if (KnightPos.Y + 1 < _board.GetLength(0))
                     MoveKnight(KnightPos.Y + 1, KnightPos.X);
                 Console.WriteLine(KnightPos);
             }
@@ -292,6 +370,7 @@ namespace The_Knight
                 Console.WriteLine("DEEEESTROOOY");
                 Destroy();
             }
+            keyPressed = true;
         }
 
         //load knight image and make it transparent
