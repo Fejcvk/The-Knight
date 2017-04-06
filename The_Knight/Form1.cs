@@ -13,6 +13,7 @@ namespace The_Knight
     public partial class Form1 : Form
     {
         private int[,] _board;
+        private int[,] _colorBoard;
         private Point KnightPos;
         private Point Keypos;
         private Point Doorpos;
@@ -39,6 +40,7 @@ namespace The_Knight
         private void StartNewGame(int boardSize)
         {
             _board = new int[boardSize, boardSize];
+            _colorBoard = new int[boardSize, boardSize];
             GenerateBoardView();
             _pnlBoard.Enabled = true;
         }
@@ -69,6 +71,7 @@ namespace The_Knight
                     SetMargin(pictureBox);
                     PictureBoxes.Add(pictureBox);
                     _pnlBoard.Controls.Add(pictureBox);
+                    _colorBoard[i, j] = 0;
                 }
             }
             RecolorBoard();
@@ -112,78 +115,28 @@ namespace The_Knight
             {
                 for (var j = 0; j < _pnlBoard.ColumnCount; ++j)
                 {
-                    PictureBox current = (PictureBox) _pnlBoard.GetControlFromPosition(j, i);
-                    PictureBox neighborL;
-                    PictureBox neighborR;
-                    PictureBox neighborU;
-                    PictureBox neighborD;
-                    if (j - 1 >= 0)
+                    if (i > 0 && _colorBoard[i - 1, j] == 0 || j > 0 && _colorBoard[i, j - 1] == 0)
                     {
-                        neighborL = (PictureBox) _pnlBoard.GetControlFromPosition(j - 1, i);
-                        current = (PictureBox) _pnlBoard.GetControlFromPosition(j, i);
-                        //if adjacent wall i a wall we have 50% chance to our cell be a wall
-                        if (neighborL.BackColor == Color.Maroon)
-                        {
-                            var colorVal = _random.Next(0, 2);
-                            current.BackColor = colorVal == 0 ? Color.Maroon : Color.ForestGreen;
-                        }
-                        //esle we have 20% for our cell to be a wall
+                        var colorValue = _random.Next(0, 2);
+                        PictureBox currentbox = (PictureBox) _pnlBoard.GetControlFromPosition(j, i);
+                        if (colorValue == 0)
+                            currentbox.BackColor = Color.Maroon;
                         else
                         {
-                            var colorVal = _random.Next(0, 4);
-                            current.BackColor = colorVal == 0 ? Color.Maroon : Color.ForestGreen;
+                            currentbox.BackColor = Color.ForestGreen;
+                            _colorBoard[i, j] = 1;
                         }
                     }
-                    if (j + 1 < _board.GetLength(0))
+                    else
                     {
-                        neighborR = (PictureBox) _pnlBoard.GetControlFromPosition(j + 1, i);
-                        current = (PictureBox) _pnlBoard.GetControlFromPosition(j, i);
-                        //if adjacent wall i a wall we have 50% chance to our cell be a wall
-                        if (neighborR.BackColor == Color.Maroon)
-                        {
-                            var colorVal = _random.Next(0, 2);
-                            current.BackColor = colorVal == 0 ? Color.Maroon : Color.ForestGreen;
-                        }
-                        //esle we have 20% for our cell to be a wall
+                        var colorValue = _random.Next(0, 4);
+                        PictureBox currentbox = (PictureBox)_pnlBoard.GetControlFromPosition(j, i);
+                        if(colorValue == 0)
+                            currentbox.BackColor = Color.Maroon;
                         else
                         {
-                            var colorVal = _random.Next(0, 4);
-                            current.BackColor = colorVal == 0 ? Color.Maroon : Color.ForestGreen;
-                        }
-                    }
-
-                    if (i - 1 >= 0)
-                    {
-                        neighborU = (PictureBox) _pnlBoard.GetControlFromPosition(j, i - 1);
-                        current = (PictureBox) _pnlBoard.GetControlFromPosition(j, i);
-                        //if adjacent wall i a wall we have 50% chance to our cell be a wall
-                        if (neighborU.BackColor == Color.Maroon)
-                        {
-                            var colorVal = _random.Next(0, 2);
-                            current.BackColor = colorVal == 0 ? Color.Maroon : Color.ForestGreen;
-                        }
-                        //esle we have 20% for our cell to be a wall
-                        else
-                        {
-                            var colorVal = _random.Next(0, 4);
-                            current.BackColor = colorVal == 0 ? Color.Maroon : Color.ForestGreen;
-                        }
-                    }
-                    if (i + 1 < _board.GetLength(0))
-                    {
-                        neighborD = (PictureBox) _pnlBoard.GetControlFromPosition(j, i + 1);
-                        current = (PictureBox) _pnlBoard.GetControlFromPosition(j, i);
-                        //if adjacent wall i a wall we have 50% chance to our cell be a wall
-                        if (neighborD.BackColor == Color.Maroon)
-                        {
-                            var colorVal = _random.Next(0, 2);
-                            current.BackColor = colorVal == 0 ? Color.Maroon : Color.ForestGreen;
-                        }
-                        //esle we have 20% for our cell to be a wall
-                        else
-                        {
-                            var colorVal = _random.Next(0, 4);
-                            current.BackColor = colorVal == 0 ? Color.Maroon : Color.ForestGreen;
+                            currentbox.BackColor = Color.ForestGreen;
+                            _colorBoard[i, j] = 1;
                         }
                     }
                 }
