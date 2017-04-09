@@ -35,6 +35,11 @@
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._pnlBoard = new System.Windows.Forms.TableLayoutPanel();
+            this.editmodebutton = new System.Windows.Forms.ToolStripButton();
+            this.leftclickbutton = new System.Windows.Forms.ToolStripDropDownButton();
+            this.grasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.wallToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.gamemodebutton = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -42,9 +47,13 @@
             // 
             this.toolStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripDropDownButton1});
+            this.toolStripDropDownButton1,
+            this.editmodebutton,
+            this.gamemodebutton,
+            this.leftclickbutton});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Padding = new System.Windows.Forms.Padding(0);
             this.toolStrip1.Size = new System.Drawing.Size(818, 25);
             this.toolStrip1.TabIndex = 2;
             // 
@@ -64,7 +73,7 @@
             // toolStripMenuItem4
             // 
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(132, 22);
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(152, 22);
             this.toolStripMenuItem4.Tag = "14";
             this.toolStripMenuItem4.Text = "New Game";
             this.toolStripMenuItem4.Click += new System.EventHandler(this.toolStripMenuItem4_Click);
@@ -72,14 +81,14 @@
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.settingsToolStripMenuItem.Text = "Settings";
             this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             // 
             // _pnlBoard
@@ -108,6 +117,52 @@
             this._pnlBoard.Size = new System.Drawing.Size(818, 586);
             this._pnlBoard.TabIndex = 0;
             // 
+            // editmodebutton
+            // 
+            this.editmodebutton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.editmodebutton.Image = ((System.Drawing.Image)(resources.GetObject("editmodebutton.Image")));
+            this.editmodebutton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.editmodebutton.Name = "editmodebutton";
+            this.editmodebutton.Size = new System.Drawing.Size(65, 22);
+            this.editmodebutton.Text = "Edit mode";
+            this.editmodebutton.Click += new System.EventHandler(this.toolStripButton1_Click);
+            // 
+            // leftclickbutton
+            // 
+            this.leftclickbutton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.leftclickbutton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.grasToolStripMenuItem,
+            this.wallToolStripMenuItem});
+            this.leftclickbutton.Image = ((System.Drawing.Image)(resources.GetObject("leftclickbutton.Image")));
+            this.leftclickbutton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.leftclickbutton.Name = "leftclickbutton";
+            this.leftclickbutton.Size = new System.Drawing.Size(67, 22);
+            this.leftclickbutton.Text = "Left click";
+            this.leftclickbutton.Visible = false;
+            // 
+            // grasToolStripMenuItem
+            // 
+            this.grasToolStripMenuItem.Name = "grasToolStripMenuItem";
+            this.grasToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.grasToolStripMenuItem.Text = "Grass";
+            // 
+            // wallToolStripMenuItem
+            // 
+            this.wallToolStripMenuItem.Name = "wallToolStripMenuItem";
+            this.wallToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.wallToolStripMenuItem.Text = "Wall";
+            // 
+            // gamemodebutton
+            // 
+            this.gamemodebutton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.gamemodebutton.Image = ((System.Drawing.Image)(resources.GetObject("gamemodebutton.Image")));
+            this.gamemodebutton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.gamemodebutton.Name = "gamemodebutton";
+            this.gamemodebutton.Size = new System.Drawing.Size(76, 22);
+            this.gamemodebutton.Text = "Game mode";
+            this.gamemodebutton.Visible = false;
+            this.gamemodebutton.Click += new System.EventHandler(this.toolStripButton2_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -119,6 +174,7 @@
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "The Knight";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -134,6 +190,11 @@
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         public System.Windows.Forms.TableLayoutPanel _pnlBoard;
+        private System.Windows.Forms.ToolStripButton editmodebutton;
+        private System.Windows.Forms.ToolStripDropDownButton leftclickbutton;
+        private System.Windows.Forms.ToolStripMenuItem grasToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem wallToolStripMenuItem;
+        private System.Windows.Forms.ToolStripButton gamemodebutton;
     }
 }
 
