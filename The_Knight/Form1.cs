@@ -20,6 +20,7 @@ namespace The_Knight
         private Point Keypos;
         private Point Doorpos;
         private bool keyPressed = false;
+        private bool editMode = false;
         private bool isReversed;
         private bool isOpen;
         private Random _random = new Random();
@@ -309,42 +310,45 @@ namespace The_Knight
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Down && !keyPressed)
+            if (!editMode)
             {
-                Console.WriteLine("w dol");
-                if (KnightPos.X + 1 < _board.GetLength(0))
-                    MoveKnight(KnightPos.Y, KnightPos.X + 1);
-                Console.WriteLine(KnightPos);
+                if (e.KeyCode == Keys.Down && !keyPressed)
+                {
+                    Console.WriteLine("w dol");
+                    if (KnightPos.X + 1 < _board.GetLength(0))
+                        MoveKnight(KnightPos.Y, KnightPos.X + 1);
+                    Console.WriteLine(KnightPos);
+                }
+                if (e.KeyCode == Keys.Up && !keyPressed)
+                {
+                    Console.WriteLine("w góre");
+                    if (KnightPos.X - 1 >= 0)
+                        MoveKnight(KnightPos.Y, (KnightPos.X - 1));
+                    Console.WriteLine(KnightPos);
+                }
+                if (e.KeyCode == Keys.Left && !keyPressed)
+                {
+                    Console.WriteLine("w lewo");
+                    isReversed = true;
+                    if (KnightPos.Y - 1 >= 0)
+                        MoveKnight(KnightPos.Y - 1, KnightPos.X);
+                    Console.WriteLine(KnightPos);
+                }
+                if (e.KeyCode == Keys.Right && !keyPressed)
+                {
+                    Console.WriteLine("w prawo");
+                    isReversed = false;
+                    if (KnightPos.Y + 1 < _board.GetLength(0))
+                        MoveKnight(KnightPos.Y + 1, KnightPos.X);
+                    Console.WriteLine(KnightPos);
+                }
+                if (e.KeyCode == Keys.Space)
+                {
+                    Console.WriteLine("DEEEESTROOOY");
+                    Destroy();
+                }
+                keyPressed = true;
             }
-            if (e.KeyCode == Keys.Up && !keyPressed)
-            {
-                Console.WriteLine("w góre");
-                if (KnightPos.X - 1 >= 0)
-                    MoveKnight(KnightPos.Y, (KnightPos.X - 1));
-                Console.WriteLine(KnightPos);
-            }
-            if (e.KeyCode == Keys.Left && !keyPressed)
-            {
-                Console.WriteLine("w lewo");
-                isReversed = true;
-                if (KnightPos.Y - 1 >= 0)
-                    MoveKnight(KnightPos.Y - 1, KnightPos.X);
-                Console.WriteLine(KnightPos);
-            }
-            if (e.KeyCode == Keys.Right && !keyPressed)
-            {
-                Console.WriteLine("w prawo");
-                isReversed = false;
-                if (KnightPos.Y + 1 < _board.GetLength(0))
-                    MoveKnight(KnightPos.Y + 1, KnightPos.X);
-                Console.WriteLine(KnightPos);
-            }
-            if (e.KeyCode == Keys.Space)
-            {
-                Console.WriteLine("DEEEESTROOOY");
-                Destroy();
-            }
-            keyPressed = true;
         }
 
         //load knight image and make it transparent
@@ -438,5 +442,37 @@ namespace The_Knight
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            editMode = true;
+            toolStrip1.BackColor = Color.Gold;
+            editmodebutton.Visible = false;
+            gamemodebutton.Visible = true;
+            leftclickbutton.Visible = true;
+        }
+
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+            editMode = false;
+            toolStrip1.BackColor = Color.Empty;
+            editmodebutton.Visible = true;
+            gamemodebutton.Visible = false;
+            leftclickbutton.Visible = false;
+        }
+
+        //private void Form1_Load(object sender, EventArgs e)
+        //{
+        //    foreach (Panel pBox in this._pnlBoard.Controls)
+        //    {
+        //        pBox.MouseClick += new MouseEventHandler(clickOnCell);
+        //    }
+        //}
+
+        //public void clickOnCell(object sender, MouseEventArgs e)
+        //{
+        //    Console.WriteLine("Cell chosen : " + _pnlBoard.GetRow((Panel) sender) +
+        //                      _pnlBoard.GetColumn((Panel) sender));
+        //}
     }
 }
