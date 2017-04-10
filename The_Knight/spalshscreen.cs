@@ -37,7 +37,7 @@ namespace The_Knight
             int nHeightEllipse // width of ellipse
         );
 
-        private async void FadeIn(Form o, int interval = 50)
+        private async void FadeIn(Form o, int interval = 80)
         {
             while (o.Opacity < 1.0)
             {
@@ -46,7 +46,7 @@ namespace The_Knight
             }
         }
 
-        private async void FadeOut(Form o, int interval = 50)
+        private async void FadeOut(Form o, int interval = 80)
         {
             await Task.Delay(1500);
             while (o.Opacity > 0.0)
@@ -61,6 +61,7 @@ namespace The_Knight
             Opacity = 0;
             FadeIn(this, 65);
             FadeOut(this, 65);
+            label1.MouseDown += new MouseEventHandler(Splash_MouseDown);
         }
 
         private void Splash_MouseDown(object sender, MouseEventArgs e)
