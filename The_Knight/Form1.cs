@@ -567,5 +567,10 @@ namespace The_Knight
                 LoadDoor(picbox);
             }
         }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

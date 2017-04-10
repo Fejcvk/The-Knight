@@ -79,7 +79,7 @@
             // toolStripMenuItem4
             // 
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(132, 22);
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(152, 22);
             this.toolStripMenuItem4.Tag = "14";
             this.toolStripMenuItem4.Text = "New Game";
             this.toolStripMenuItem4.Click += new System.EventHandler(this.toolStripMenuItem4_Click);
@@ -87,14 +87,14 @@
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.settingsToolStripMenuItem.Text = "Settings";
             this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             // 
             // editmodebutton
@@ -124,10 +124,10 @@
             this.leftclickbutton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addGrasButton,
             this.addWallButton});
-            this.leftclickbutton.Image = ((System.Drawing.Image)(resources.GetObject("leftclickbutton.Image")));
             this.leftclickbutton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.leftclickbutton.Name = "leftclickbutton";
-            this.leftclickbutton.Size = new System.Drawing.Size(67, 22);
+            this.leftclickbutton.ShowDropDownArrow = false;
+            this.leftclickbutton.Size = new System.Drawing.Size(58, 22);
             this.leftclickbutton.Text = "Left click";
             this.leftclickbutton.Visible = false;
             // 
@@ -182,12 +182,12 @@
             this.keyToolStripMenuItem,
             this.doorToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 92);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(110, 70);
             // 
             // knightToolStripMenuItem
             // 
             this.knightToolStripMenuItem.Name = "knightToolStripMenuItem";
-            this.knightToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.knightToolStripMenuItem.Size = new System.Drawing.Size(109, 22);
             this.knightToolStripMenuItem.Tag = "1";
             this.knightToolStripMenuItem.Text = "Knight";
             this.knightToolStripMenuItem.Click += new System.EventHandler(this.knightToolStripMenuItem_Click);
@@ -195,7 +195,7 @@
             // keyToolStripMenuItem
             // 
             this.keyToolStripMenuItem.Name = "keyToolStripMenuItem";
-            this.keyToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.keyToolStripMenuItem.Size = new System.Drawing.Size(109, 22);
             this.keyToolStripMenuItem.Tag = "2";
             this.keyToolStripMenuItem.Text = "Key";
             this.keyToolStripMenuItem.Click += new System.EventHandler(this.keyToolStripMenuItem_Click);
@@ -203,7 +203,7 @@
             // doorToolStripMenuItem
             // 
             this.doorToolStripMenuItem.Name = "doorToolStripMenuItem";
-            this.doorToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.doorToolStripMenuItem.Size = new System.Drawing.Size(109, 22);
             this.doorToolStripMenuItem.Tag = "3";
             this.doorToolStripMenuItem.Text = "Door";
             this.doorToolStripMenuItem.Click += new System.EventHandler(this.doorToolStripMenuItem_Click);
@@ -236,7 +236,6 @@
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         public System.Windows.Forms.TableLayoutPanel _pnlBoard;
         private System.Windows.Forms.ToolStripButton editmodebutton;
-        private System.Windows.Forms.ToolStripDropDownButton leftclickbutton;
         private System.Windows.Forms.ToolStripMenuItem addGrasButton;
         private System.Windows.Forms.ToolStripMenuItem addWallButton;
         private System.Windows.Forms.ToolStripButton gamemodebutton;
@@ -244,6 +243,7 @@
         private System.Windows.Forms.ToolStripMenuItem knightToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem keyToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem doorToolStripMenuItem;
+        private System.Windows.Forms.ToolStripDropDownButton leftclickbutton;
     }
 }
 
