@@ -19,6 +19,7 @@ namespace The_Knight
         private Point KnightPos;
         private Point Keypos;
         private Point Doorpos;
+        private Point editPos;
         private bool keyPressed = false;
         private bool editMode = false;
         private bool isReversed;
@@ -63,6 +64,7 @@ namespace The_Knight
             _colorBoard = new int[boardSize, boardSize];
             GenerateBoardView();
             _pnlBoard.Enabled = true;
+
         }
 
         //generate game board with dynamically added pictureboxes
@@ -87,8 +89,10 @@ namespace The_Knight
                         Dock = DockStyle.Fill,
                         Tag = new Point(i, j),
                         BorderStyle = BorderStyle.None,
+
                     };
                     SetMargin(pictureBox);
+                    pictureBox.MouseClick += ClickOnPictureBox;
                     PictureBoxes.Add(pictureBox);
                     _pnlBoard.Controls.Add(pictureBox);
                     _colorBoard[i, j] = 0;
@@ -238,7 +242,7 @@ namespace The_Knight
                     LoadDoor(PictureBoxes.ElementAt(pos));
                     Doorpos = (Point) PictureBoxes.ElementAt(pos).Tag;
                     doorplaced = true;
-                    Console.WriteLine("Door placed at" + Keypos);
+                    Console.WriteLine("Door placed at" + Doorpos);
                 }
                 else
                 {
@@ -461,18 +465,107 @@ namespace The_Knight
             leftclickbutton.Visible = false;
         }
 
-        //private void Form1_Load(object sender, EventArgs e)
-        //{
-        //    foreach (Panel pBox in this._pnlBoard.Controls)
-        //    {
-        //        pBox.MouseClick += new MouseEventHandler(clickOnCell);
-        //    }
-        //}
+        private void ClickOnPictureBox(object sender, MouseEventArgs e)
+        {
+           // Console.WriteLine("Cell chosen: " + _pnlBoard.GetPositionFromControl((PictureBox)sender));
+            if (addWallButton.CheckState == CheckState.Checked && editMode && e.Button == MouseButtons.Left)
+            {
+                var cellpos =_pnlBoard.GetPositionFromControl((PictureBox) sender);
+                var pos = new Point(cellpos.Row, cellpos.Column);
+                var picbox = (PictureBox) _pnlBoard.GetControlFromPosition(cellpos.Column, cellpos.Row);
+                if (picbox.BackColor == Color.ForestGreen && pos != Doorpos && pos != KnightPos && pos != Keypos)
+                {
+                    picbox.BackColor = Color.Maroon;
+                    Console.WriteLine("Wall has been added at " + cellpos);
+                }
+                else
+                    Console.WriteLine("Wall already exist");
+            }
+            else if (addGrasButton.CheckState == CheckState.Checked && editMode && e.Button == MouseButtons.Left)
+            {
+                var cellpos = _pnlBoard.GetPositionFromControl((PictureBox)sender);
+                var pos = new Point(cellpos.Row, cellpos.Column);
+                var picbox = (PictureBox)_pnlBoard.GetControlFromPosition(cellpos.Column, cellpos.Row);
+                if (picbox.BackColor == Color.Maroon && pos != Doorpos && pos != KnightPos && pos != Keypos)
+                {
+                    picbox.BackColor = Color.ForestGreen;
+                    Console.WriteLine("Grass has been added at " + cellpos);
+                }
+                else
+                    Console.WriteLine("Grass already exist");
+            }
+            else if (e.Button == MouseButtons.Right && editMode)
+            {
+                Console.WriteLine("Cell chosen with right click: " + _pnlBoard.GetPositionFromControl((PictureBox)sender));
+                var cellpos = _pnlBoard.GetPositionFromControl((PictureBox)sender);
+                var pos = new Point(cellpos.Row, cellpos.Column);
+                editPos = pos;
+                contextMenuStrip1.Show(_pnlBoard.GetControlFromPosition(cellpos.Column, cellpos.Row), e.Location.X, e.Location.Y);
+            }
+        }
 
-        //public void clickOnCell(object sender, MouseEventArgs e)
-        //{
-        //    Console.WriteLine("Cell chosen : " + _pnlBoard.GetRow((Panel) sender) +
-        //                      _pnlBoard.GetColumn((Panel) sender));
-        //}
+        private void addGrasButton_Click(object sender, EventArgs e)
+        {
+            addWallButton.Checked = false;
+        }
+
+        private void addWallButton_Click(object sender, EventArgs e)
+        {
+            addGrasButton.Checked = false;
+        }
+
+        private void knightToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var picbox = (PictureBox)_pnlBoard.GetControlFromPosition(editPos.Y, editPos.X);
+            if (picbox.BackColor == Color.ForestGreen)
+            { 
+                var cellpos = _pnlBoard.GetPositionFromControl(picbox);
+                Console.WriteLine("Selected to place a Knight at " + cellpos);
+                for (var i = 0; i < PictureBoxes.Count; ++i)
+                {
+                    if ((Point) PictureBoxes.ElementAt(i).Tag == KnightPos)
+                        PictureBoxes.ElementAt(i).Image = null;
+                }
+                KnightPos.X = cellpos.Row;
+                KnightPos.Y = cellpos.Column;
+                LoadKnight(picbox);
+            }
+        }
+
+        private void keyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var picbox = (PictureBox)_pnlBoard.GetControlFromPosition(editPos.Y, editPos.X);
+            if (picbox.BackColor == Color.ForestGreen)
+            {
+                var cellpos = _pnlBoard.GetPositionFromControl(picbox);
+                Console.WriteLine("Selected to place a key at " + cellpos);
+                for (var i = 0; i < PictureBoxes.Count; ++i)
+                {
+                    if ((Point) PictureBoxes.ElementAt(i).Tag == Keypos)
+                        PictureBoxes.ElementAt(i).Image = null;
+                }
+                Keypos.X = cellpos.Row;
+                Keypos.Y = cellpos.Column;
+                LoadKey(picbox);
+            }
+        }
+
+        private void doorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var picbox = (PictureBox)_pnlBoard.GetControlFromPosition(editPos.Y, editPos.X);
+            if (picbox.BackColor == Color.ForestGreen)
+            {
+                var cellpos = _pnlBoard.GetPositionFromControl(picbox);
+                Console.WriteLine("Selected to place a closed door at " + cellpos);
+                for (var i = 0; i < PictureBoxes.Count; ++i)
+                {
+                    if ((Point) PictureBoxes.ElementAt(i).Tag == Doorpos)
+                        PictureBoxes.ElementAt(i).Image = null;
+                }
+                Doorpos.X = cellpos.Row;
+                Doorpos.Y = cellpos.Column;
+                LoadDoor(picbox);
+            }
+        }
     }
 }
