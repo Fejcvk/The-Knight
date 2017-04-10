@@ -154,7 +154,7 @@ namespace The_Knight
                     }
                     else
                     {
-                        var colorValue = _random.Next(0, 4);
+                        var colorValue = _random.Next(0, 5);
                         PictureBox currentbox = (PictureBox) _pnlBoard.GetControlFromPosition(j, i);
                         if (colorValue == 0)
                             currentbox.BackColor = Color.Maroon;
@@ -510,11 +510,15 @@ namespace The_Knight
         //avoid having 1 option checked at the same time
         private void addGrasButton_Click(object sender, EventArgs e)
         {
+            addWallButton.Enabled = true;
             addWallButton.Checked = false;
+            addGrasButton.Enabled = false;
         }
 
         private void addWallButton_Click(object sender, EventArgs e)
         {
+            addWallButton.Enabled = false;
+            addGrasButton.Enabled = true;
             addGrasButton.Checked = false;
         }
 
@@ -530,6 +534,20 @@ namespace The_Knight
                 for (var i = 0; i < PictureBoxes.Count; ++i)
                 {
                     if ((Point) PictureBoxes.ElementAt(i).Tag == KnightPos)
+                        PictureBoxes.ElementAt(i).Image = null;
+                }
+                KnightPos.X = cellpos.Row;
+                KnightPos.Y = cellpos.Column;
+                LoadKnight(picbox);
+            }
+            if (picbox.BackColor == Color.Maroon)
+            {
+                picbox.BackColor = Color.ForestGreen;
+                var cellpos = _pnlBoard.GetPositionFromControl(picbox);
+                Console.WriteLine("Selected to place a Knight at " + cellpos);
+                for (var i = 0; i < PictureBoxes.Count; ++i)
+                {
+                    if ((Point)PictureBoxes.ElementAt(i).Tag == KnightPos)
                         PictureBoxes.ElementAt(i).Image = null;
                 }
                 KnightPos.X = cellpos.Row;
@@ -554,6 +572,20 @@ namespace The_Knight
                 Keypos.Y = cellpos.Column;
                 LoadKey(picbox);
             }
+            else
+            {
+                picbox.BackColor = Color.ForestGreen;
+                var cellpos = _pnlBoard.GetPositionFromControl(picbox);
+                Console.WriteLine("Selected to place a key at " + cellpos);
+                for (var i = 0; i < PictureBoxes.Count; ++i)
+                {
+                    if ((Point)PictureBoxes.ElementAt(i).Tag == Keypos)
+                        PictureBoxes.ElementAt(i).Image = null;
+                }
+                Keypos.X = cellpos.Row;
+                Keypos.Y = cellpos.Column;
+                LoadKey(picbox);
+            }
         }
 
         private void doorToolStripMenuItem_Click(object sender, EventArgs e)
@@ -566,6 +598,20 @@ namespace The_Knight
                 for (var i = 0; i < PictureBoxes.Count; ++i)
                 {
                     if ((Point) PictureBoxes.ElementAt(i).Tag == Doorpos)
+                        PictureBoxes.ElementAt(i).Image = null;
+                }
+                Doorpos.X = cellpos.Row;
+                Doorpos.Y = cellpos.Column;
+                LoadDoor(picbox);
+            }
+            else
+            {
+                picbox.BackColor = Color.ForestGreen;
+                var cellpos = _pnlBoard.GetPositionFromControl(picbox);
+                Console.WriteLine("Selected to place a closed door at " + cellpos);
+                for (var i = 0; i < PictureBoxes.Count; ++i)
+                {
+                    if ((Point)PictureBoxes.ElementAt(i).Tag == Doorpos)
                         PictureBoxes.ElementAt(i).Image = null;
                 }
                 Doorpos.X = cellpos.Row;
