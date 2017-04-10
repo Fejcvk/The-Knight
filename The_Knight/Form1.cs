@@ -52,6 +52,7 @@ namespace The_Knight
             KeyUp += Form1_KeyUp;
         }
 
+        //to avoid one-press
         private void Form1_KeyUp(object sender, KeyEventArgs e)
         {
             keyPressed = false;
@@ -432,7 +433,7 @@ namespace The_Knight
         {
             StartNewGame(8);
         }
-
+        //SHORTCUT n,m
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             switch (keyData)
@@ -465,9 +466,10 @@ namespace The_Knight
             leftclickbutton.Visible = false;
         }
 
+
+        //GAME EDITOR LEFT CLICK FUNCTIONALITY + CONTEXT STRIP MENU
         private void ClickOnPictureBox(object sender, MouseEventArgs e)
         {
-           // Console.WriteLine("Cell chosen: " + _pnlBoard.GetPositionFromControl((PictureBox)sender));
             if (addWallButton.CheckState == CheckState.Checked && editMode && e.Button == MouseButtons.Left)
             {
                 var cellpos =_pnlBoard.GetPositionFromControl((PictureBox) sender);
@@ -504,6 +506,8 @@ namespace The_Knight
             }
         }
 
+
+        //avoid having 1 option checked at the same time
         private void addGrasButton_Click(object sender, EventArgs e)
         {
             addWallButton.Checked = false;
@@ -514,6 +518,8 @@ namespace The_Knight
             addGrasButton.Checked = false;
         }
 
+
+        //FUNCTIONS WHICH PLACE KNIGHT/KEY/DOOR as selected in context menu
         private void knightToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var picbox = (PictureBox)_pnlBoard.GetControlFromPosition(editPos.Y, editPos.X);
@@ -568,9 +574,5 @@ namespace The_Knight
             }
         }
 
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }
