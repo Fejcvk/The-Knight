@@ -42,7 +42,7 @@ namespace The_Knight
             while (o.Opacity < 1.0)
             {
                 await Task.Delay(interval);
-                o.Opacity += 0.1;
+                o.Opacity += 0.08;
             }
         }
 
@@ -52,7 +52,7 @@ namespace The_Knight
             while (o.Opacity > 0.0)
             {
                 await Task.Delay(interval);
-                o.Opacity -= 0.1;
+                o.Opacity -= 0.05;
             }
         }
 
