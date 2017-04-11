@@ -444,7 +444,7 @@ namespace The_Knight
         public void Settings()
         {
             var setupBox = new Form2();
-            setupBox.comboBox1.SelectedIndex = 2;
+            setupBox.comboBox1.SelectedIndex = 0;
             DialogResult result = setupBox.ShowDialog(this);
             if (result == DialogResult.Cancel)
                 setupBox.Dispose();
@@ -452,15 +452,15 @@ namespace The_Knight
             {
                 if (setupBox.comboBox1.SelectedIndex == 0)
                 {
-                    StartNewGame(10);
+                    StartNewGame(8);
                 }
                 if (setupBox.comboBox1.SelectedIndex == 1)
                 {
-                    StartNewGame(12);
+                    StartNewGame(10);
                 }
                 if (setupBox.comboBox1.SelectedIndex == 2)
                 {
-                    StartNewGame(8);
+                    StartNewGame(12);
                 }
             }
         }
