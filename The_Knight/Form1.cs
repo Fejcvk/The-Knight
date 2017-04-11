@@ -20,8 +20,8 @@ namespace The_Knight
         private Point Keypos;
         private Point Doorpos;
         private Point editPos;
-        private bool keyPressed = false;
-        private bool editMode = false;
+        private bool keyPressed;
+        private bool editMode;
         private bool isReversed;
         private bool isOpen;
         private Random _random = new Random();
@@ -52,13 +52,18 @@ namespace The_Knight
             KeyUp += Form1_KeyUp;
         }
 
+        //
         //to avoid one-press
+        //
+
         private void Form1_KeyUp(object sender, KeyEventArgs e)
         {
             keyPressed = false;
         }
-
+        //
         //start new game
+        //
+
         private void StartNewGame(int boardSize)
         {
             _board = new int[boardSize, boardSize];
@@ -67,8 +72,10 @@ namespace The_Knight
             _pnlBoard.Enabled = true;
 
         }
-
+        //
         //generate game board with dynamically added pictureboxes
+        //
+
         private void GenerateBoardView()
         {
             PictureBoxes = new List<PictureBox>();
@@ -96,14 +103,15 @@ namespace The_Knight
                     pictureBox.MouseClick += ClickOnPictureBox;
                     PictureBoxes.Add(pictureBox);
                     _pnlBoard.Controls.Add(pictureBox);
-                    _colorBoard[i, j] = 0;
                 }
             }
             RecolorBoard();
         }
 
-
+        //
         //look for non maroon cell and place the knight, also grab the position 
+        //
+
         private void PlaceKnight()
         {
             var pos = 0;
@@ -121,10 +129,17 @@ namespace The_Knight
                     pos += 1;
             }
         }
-
+        //
         //for shortcut ctrl+n to avoid clearing whole form
+        /// <summary>
+        /// 
+        /// </summary>
+
         private void RecolorBoard()
         {
+            isReversed = false;
+            isOpen = false;
+            _colorBoard = new int[_board.GetLength(0), _board.GetLength(1)];
             //wyczyszczenie tablicy
             for (var i = 0; i < PictureBoxes.Count; ++i)
             {
@@ -140,6 +155,7 @@ namespace The_Knight
             {
                 for (var j = 0; j < _pnlBoard.ColumnCount; ++j)
                 {
+                    _colorBoard[i, j] = 0;
                     if (i > 0 && _colorBoard[i - 1, j] == 0 || j > 0 && _colorBoard[i, j - 1] == 0)
                     {
                         var colorValue = _random.Next(0, 2);
@@ -171,8 +187,9 @@ namespace The_Knight
             PlaceDoor();
         }
 
-
+        //
         //for setup marigin to avoid ugly padding
+        //
         private static void SetMargin(Control myControl)
         {
             var Margin = myControl.Margin;
@@ -183,7 +200,10 @@ namespace The_Knight
             myControl.Margin = Margin;
         }
 
+        //
         //place key random on board
+        //
+
         private void PlaceKey()
         {
             var pos = _random.Next(0, PictureBoxes.Count);
@@ -205,8 +225,10 @@ namespace The_Knight
                 }
             }
         }
-
+        //
         //load key from resources
+        //
+
         private void LoadKey(PictureBox picturebox)
         {
             Bitmap src;
@@ -215,8 +237,10 @@ namespace The_Knight
             picturebox.Image = src;
             picturebox.SizeMode = PictureBoxSizeMode.StretchImage;
         }
-
+        //
         //load closed gate from resources
+        //
+
         private void LoadDoor(PictureBox picturebox)
         {
             Bitmap src;
@@ -228,8 +252,10 @@ namespace The_Knight
             picturebox.Image = src;
             picturebox.SizeMode = PictureBoxSizeMode.StretchImage;
         }
+        //
+        //place door random on board
+        //
 
-        //place key random on board
         private void PlaceDoor()
         {
             var pos = _random.Next(0, PictureBoxes.Count);
@@ -252,8 +278,10 @@ namespace The_Knight
                 }
             }
         }
-
+        //
         //move knight
+        //
+
         private void MoveKnight(int newcolumnpos, int newrowpos)
         {
             PictureBox knightbox = (PictureBox) _pnlBoard.GetControlFromPosition(KnightPos.Y, KnightPos.X);
@@ -284,7 +312,10 @@ namespace The_Knight
             }
         }
 
+        //
         //destroying a wall while press spacebar
+        //
+
         private void Destroy()
         {
             PictureBox aboveknight;
@@ -312,7 +343,7 @@ namespace The_Knight
                 righttoknight.BackColor = Color.ForestGreen;
             }
         }
-
+        
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             if (!editMode)
@@ -335,6 +366,7 @@ namespace The_Knight
                 {
                     Console.WriteLine("w lewo");
                     isReversed = true;
+                    LoadKnight((PictureBox) _pnlBoard.GetControlFromPosition(KnightPos.Y, KnightPos.X));
                     if (KnightPos.Y - 1 >= 0)
                         MoveKnight(KnightPos.Y - 1, KnightPos.X);
                     Console.WriteLine(KnightPos);
@@ -343,6 +375,7 @@ namespace The_Knight
                 {
                     Console.WriteLine("w prawo");
                     isReversed = false;
+                    LoadKnight((PictureBox)_pnlBoard.GetControlFromPosition(KnightPos.Y, KnightPos.X));
                     if (KnightPos.Y + 1 < _board.GetLength(0))
                         MoveKnight(KnightPos.Y + 1, KnightPos.X);
                     Console.WriteLine(KnightPos);
@@ -356,7 +389,12 @@ namespace The_Knight
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="picturebox"></param>
         //load knight image and make it transparent
+
         public void LoadKnight(PictureBox picturebox)
         {
             Bitmap src;
@@ -399,26 +437,30 @@ namespace The_Knight
             }
         }
 
+        //
         //calling setting combobox
+        //
+
         public void Settings()
         {
             var setupBox = new Form2();
+            setupBox.comboBox1.SelectedIndex = 2;
             DialogResult result = setupBox.ShowDialog(this);
-            if (result == DialogResult.Abort)
-                setupBox.Close();
+            if (result == DialogResult.Cancel)
+                setupBox.Dispose();
             else
             {
                 if (setupBox.comboBox1.SelectedIndex == 0)
                 {
-                    StartNewGame(8);
+                    StartNewGame(10);
                 }
                 if (setupBox.comboBox1.SelectedIndex == 1)
                 {
-                    StartNewGame(10);
+                    StartNewGame(12);
                 }
                 if (setupBox.comboBox1.SelectedIndex == 2)
                 {
-                    StartNewGame(12);
+                    StartNewGame(8);
                 }
             }
         }
@@ -433,17 +475,24 @@ namespace The_Knight
         {
             StartNewGame(8);
         }
+
+        //
         //SHORTCUT n,m
+        //
+
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            switch (keyData)
+            if (!editMode)
             {
-                case (Keys.Control | Keys.N):
-                    RecolorBoard();
-                    return true;
-                case (Keys.Control | Keys.M):
-                    Settings();
-                    return true;
+                switch (keyData)
+                {
+                    case (Keys.Control | Keys.N):
+                        RecolorBoard();
+                        return true;
+                    case (Keys.Control | Keys.M):
+                        Settings();
+                        return true;
+                }
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
@@ -466,8 +515,10 @@ namespace The_Knight
             leftclickbutton.Visible = false;
         }
 
-
+        //
         //GAME EDITOR LEFT CLICK FUNCTIONALITY + CONTEXT STRIP MENU
+        //
+
         private void ClickOnPictureBox(object sender, MouseEventArgs e)
         {
             if (addWallButton.CheckState == CheckState.Checked && editMode && e.Button == MouseButtons.Left)
@@ -506,8 +557,10 @@ namespace The_Knight
             }
         }
 
-
+        //
         //avoid having 1 option checked at the same time
+        //
+
         private void addGrasButton_Click(object sender, EventArgs e)
         {
             addWallButton.Enabled = true;
@@ -522,8 +575,14 @@ namespace The_Knight
             addGrasButton.Checked = false;
         }
 
-
+        //
         //FUNCTIONS WHICH PLACE KNIGHT/KEY/DOOR as selected in context menu
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+
         private void knightToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var picbox = (PictureBox)_pnlBoard.GetControlFromPosition(editPos.Y, editPos.X);
@@ -540,7 +599,7 @@ namespace The_Knight
                 KnightPos.Y = cellpos.Column;
                 LoadKnight(picbox);
             }
-            if (picbox.BackColor == Color.Maroon)
+            else
             {
                 picbox.BackColor = Color.ForestGreen;
                 var cellpos = _pnlBoard.GetPositionFromControl(picbox);
@@ -559,7 +618,21 @@ namespace The_Knight
         private void keyToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var picbox = (PictureBox)_pnlBoard.GetControlFromPosition(editPos.Y, editPos.X);
-            if (picbox.BackColor == Color.ForestGreen)
+            if (isOpen)
+            {
+                var cellpos = _pnlBoard.GetPositionFromControl(picbox);
+                Console.WriteLine("Selected to place a key at " + cellpos);
+                for (var i = 0; i < PictureBoxes.Count; ++i)
+                {
+                    if ((Point)PictureBoxes.ElementAt(i).Tag == Keypos)
+                        PictureBoxes.ElementAt(i).Image = null;
+                }
+                Keypos.X = cellpos.Row;
+                Keypos.Y = cellpos.Column;
+                LoadKey(picbox);
+                LoadKnight((PictureBox)_pnlBoard.GetControlFromPosition(KnightPos.Y, KnightPos.X));
+            }
+            else if (picbox.BackColor == Color.ForestGreen)
             {
                 var cellpos = _pnlBoard.GetPositionFromControl(picbox);
                 Console.WriteLine("Selected to place a key at " + cellpos);
@@ -591,7 +664,22 @@ namespace The_Knight
         private void doorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var picbox = (PictureBox)_pnlBoard.GetControlFromPosition(editPos.Y, editPos.X);
-            if (picbox.BackColor == Color.ForestGreen)
+            if (isOpen)
+            {
+                isOpen = false;
+                Console.WriteLine("Cannot place open door");
+                var cellpos = _pnlBoard.GetPositionFromControl(picbox);
+                Console.WriteLine("Selected to place a closed door at " + cellpos);
+                for (var i = 0; i < PictureBoxes.Count; ++i)
+                {
+                    if ((Point)PictureBoxes.ElementAt(i).Tag == Doorpos)
+                        PictureBoxes.ElementAt(i).Image = null;
+                }
+                Doorpos.X = cellpos.Row;
+                Doorpos.Y = cellpos.Column;
+                LoadDoor(picbox);
+            }
+            else if (picbox.BackColor == Color.ForestGreen)
             {
                 var cellpos = _pnlBoard.GetPositionFromControl(picbox);
                 Console.WriteLine("Selected to place a closed door at " + cellpos);
